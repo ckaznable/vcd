@@ -18,6 +18,9 @@ func draw(s tcell.Screen, d Date) {
 	}
 
 	str := fmt.Sprintf("%d%s%0*d%s%0*d", d.Day, joinStr, 2, d.Hours, joinStr, 2, d.Minutes)
+	if d.IsDefault() {
+		str = "Have good vacation!"
+	}
 
 	width, height := s.Size()
 	y := height / 2
