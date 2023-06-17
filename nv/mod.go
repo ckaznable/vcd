@@ -62,8 +62,13 @@ func (v *VacationBuilder) ExcludeDays(date []string) map[string]error {
 }
 
 func (v *VacationBuilder) AllWeekendsInYear(year int) *VacationBuilder {
-	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC)
-	endDate := time.Date(year, time.December, 31, 0, 0, 0, 0, time.UTC)
+	local, err := time.LoadLocation("Local")
+	if err != nil {
+		local = time.UTC
+	}
+
+	startDate := time.Date(year, time.January, 1, 0, 0, 0, 0, local)
+	endDate := time.Date(year, time.December, 31, 0, 0, 0, 0, local)
 
 	for d := startDate; d.Before(endDate); d = d.AddDate(0, 0, 1) {
 		if d.Weekday() == time.Saturday || d.Weekday() == time.Sunday {
