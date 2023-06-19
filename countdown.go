@@ -34,7 +34,6 @@ func countdown(d Date, ch chan Date) {
 
 		ch <- d
 	}
-
 }
 
 func tick(d Date) (Date, error) {
@@ -57,7 +56,13 @@ func tick(d Date) (Date, error) {
 }
 
 func getCountDownDate() Date {
-	return getDiffDate(time.Now(), getNextVacation())
+	nv := getNextVacation()
+	workTime, err := parseWorkTimeArgs()
+	if err == nil {
+		nv = time.Date(nv.Year(), nv.Month(), nv.Day()-1, workTime.Work.Hours, workTime.Work.Minutes, 0, 0, nv.Location())
+	}
+
+	return getDiffDate(time.Now(), nv)
 }
 
 func getNextVacation() time.Time {
