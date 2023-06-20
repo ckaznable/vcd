@@ -10,11 +10,13 @@ import (
 func Run(s tcell.Screen, d Date, ch chan Date) {
 	for {
 		select {
-		case d = <-ch:
+		case nd := <-ch:
+			draw(s, nd)
+			d = nd
 		default:
+			draw(s, d)
 		}
 
-		draw(s, d)
 		time.Sleep(time.Second)
 	}
 }

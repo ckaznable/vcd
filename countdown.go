@@ -25,7 +25,7 @@ func countdown(d Date, ch chan Date) {
 			time.Sleep(time.Minute * 1)
 		}
 
-		d, err := tick(d)
+		err := tick(&d)
 		if err != nil {
 			ch <- d
 			time.Sleep(time.Hour * 24)
@@ -36,7 +36,7 @@ func countdown(d Date, ch chan Date) {
 	}
 }
 
-func tick(d Date) (Date, error) {
+func tick(d *Date) error {
 	d.Minutes--
 	if d.Minutes == -1 {
 		d.Minutes = 59
@@ -49,10 +49,11 @@ func tick(d Date) (Date, error) {
 	}
 
 	if d.Day == -1 {
-		return DefaultDate(), errors.New("time to fun")
+		d.Day = 0
+		return errors.New("time to fun")
 	}
 
-	return d, nil
+	return nil
 }
 
 func getCountDownDate() Date {
